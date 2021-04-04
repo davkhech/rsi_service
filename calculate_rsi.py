@@ -21,11 +21,13 @@ def parse_args():
                         type=str, default='rsi.csv', help='rsi output csv file path')
     return parser.parse_args()
 
+
 def int_str_split(string):
     for i in range(len(string), -1, -1):
         if string[:i].isnumeric():
             return int(string[:i]), string[i:]
     return 1, string
+
 
 def main(args):
     df = pd.read_json(args.candles, date_unit="ms").set_index("_id")
@@ -42,7 +44,8 @@ def main(args):
     close_prices.index = interval
 
     rsi_df = rsi(close_prices, args.rsi_length)
-    rsi_df.to_csv(args.output)
+    rsi_df.to_csv(args.output, header=['rsi'])
+
 
 if __name__ == "__main__":
     main(parse_args())
