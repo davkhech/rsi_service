@@ -28,9 +28,9 @@ def extract_close_prices_and_volumes(df: pd.DataFrame, args: namedtuple) -> (pd.
     interval = volumes.loc[start: end].index
 
     dt_value, dt_unit = int_str_split(args.period)
-    close_prices = df["close"][
+    close_prices = df.reindex(
         interval + pd.Timedelta(dt_value, unit=dt_unit) - pd.Timedelta(minutes=1)
-    ]
+    )["close"]
     close_prices.index = interval
 
     return close_prices, volumes
